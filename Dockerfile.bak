@@ -1,0 +1,7 @@
+FROM python:3.6-alpine
+MAINTAINER Jagadish Manchala
+COPY requirements.txt /
+RUN pip install -r requirements.txt
+ENV VERSION 1.0
+COPY testing_service.py /
+CMD [ "python", "./testing_service.py" ]
