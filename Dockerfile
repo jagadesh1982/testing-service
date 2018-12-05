@@ -1,11 +1,7 @@
-
 FROM alpine:3.8
-
-
 
 MAINTAINER Jagadish Manchala
 ENV VERSION 1.0
-
 
 # VERSIONS
 ENV ALPINE_VERSION=3.8 \
@@ -88,8 +84,6 @@ RUN set -ex ;\
     apk del --no-cache --purge .build-deps ;\
     rm -rf /var/cache/apk/*
 
-
-
 COPY requirements.txt /
 RUN pip install -U wheel
 RUN pip install -r requirements.txt
@@ -98,10 +92,6 @@ RUN adduser -S appuser -D \
     && sed -i "s/999/99/" /etc/group
 
 USER appuser
-
-
-
-
 
 COPY testing_service.py /
 CMD [ "python", "./testing_service.py" ]
