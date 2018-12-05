@@ -93,5 +93,5 @@ RUN adduser -S appuser -D \
 
 USER appuser
 
-COPY testing_service.py /
-CMD [ "python", "./testing_service.py" ]
+COPY app.py /
+CMD [ "python", "./app.py" ]
