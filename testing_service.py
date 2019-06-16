@@ -5,6 +5,7 @@ import tornado.ioloop
 import tornado.web
 import random
 import time
+import socket
 
 from tornado.escape import json_encode
 
@@ -15,7 +16,9 @@ class Info(tornado.web.RequestHandler):
     Handles `/info` resource.
     """
     try:
-      logging.info("/info serving from %s has been invoked from %s \n", self.request.host, self.request.remote_ip)
+      hostname = socket.gethostname()    
+      IPAddr = socket.gethostbyname(hostname)    
+      logging.info("/info serving from %s has been invoked from %s \n", hostname, IPAddr)
       self.set_header("Content-Type", "application/json")
       self.write(json_encode(
         {
