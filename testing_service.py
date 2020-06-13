@@ -9,7 +9,6 @@ import socket
 
 from tornado.escape import json_encode
 
-
 class Info(tornado.web.RequestHandler):
   def get(self):
     """
@@ -25,6 +24,30 @@ class Info(tornado.web.RequestHandler):
           "version" : VERSION,
           "host" : self.request.host,
           "from" : self.request.remote_ip
+        }
+      ))
+      self.finish()
+    except Exception, e:
+      logging.debug(e)
+      self.set_status(404)
+
+
+class Demo(tornado.web.RequestHandler):
+  def get(self):
+    """
+    Handles `/demo` resource.
+    """
+    try:
+      hostname = socket.gethostname()    
+      IPAddr = socket.gethostbyname(hostname)    
+      logging.info("/Demo serving from %s has been invoked from %s \n", hostname, IPAddr)
+      self.set_header("Content-Type", "application/json")
+      self.write(json_encode(
+        {
+          "version" : VERSION,
+          "host" : self.request.host,
+          "from" : self.request.remote_ip,
+          "fruit": FRUIT
         }
       ))
       self.finish()
@@ -57,12 +80,14 @@ class Environment(tornado.web.RequestHandler):
 if __name__ == "__main__":
   app = tornado.web.Application([
         (r"/info", Info),
-        (r"/env", Environment)
+        (r"/env", Environment),
+        (r"/demo", Demo)
   ])
  
  
   PORT = os.getenv('PORT0', 9876)
   VERSION = os.getenv('VERSION', "0.5.0")
+  FRUIT = os.getenv('FRUIT', "apple")
 
   app.listen(PORT, address='0.0.0.0')
   logging.info("This is simple service in version v%s listening on port %s", VERSION, PORT)
