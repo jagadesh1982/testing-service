@@ -22,8 +22,8 @@ class Info(tornado.web.RequestHandler):
       self.write(json_encode(
         {
           "version" : VERSION,
-          "host" : self.request.host,
-          "from" : self.request.remote_ip
+          "host" : hostname,
+          "from" : IPAddr
         }
       ))
       self.finish()
@@ -32,10 +32,10 @@ class Info(tornado.web.RequestHandler):
       self.set_status(404)
 
 
-class Demo(tornado.web.RequestHandler):
+class Fruit(tornado.web.RequestHandler):
   def get(self):
     """
-    Handles `/demo` resource.
+    Handles `/fruit` resource.
     """
     try:
       hostname = socket.gethostname()    
@@ -45,8 +45,8 @@ class Demo(tornado.web.RequestHandler):
       self.write(json_encode(
         {
           "version" : VERSION,
-          "host" : self.request.host,
-          "from" : self.request.remote_ip,
+          "host" : hostname,
+          "from" : IPAddr,
           "fruit": FRUIT
         }
       ))
@@ -81,7 +81,7 @@ if __name__ == "__main__":
   app = tornado.web.Application([
         (r"/info", Info),
         (r"/env", Environment),
-        (r"/demo", Demo)
+        (r"/fruit", Fruit)
   ])
  
  
