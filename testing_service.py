@@ -6,6 +6,8 @@ import tornado.web
 import random
 import time
 import socket
+import random
+import string
 
 from tornado.escape import json_encode
 
@@ -75,13 +77,56 @@ class Environment(tornado.web.RequestHandler):
       logging.debug(e)
       self.set_status(404)
 
+class Random(tornado.web.RequestHandler):
+  def get(self):
+    """
+    Handles `/rand` resource.
+    """
+    try:
+      letters = string.ascii_lowercase
+      file = open("file.txt", "w")
+      file.write(''.join(random.choice(letters) for i in range(10)))
+      file.write("\n")
+
+      logging.info("/env serving from %s has been invoked from %s \n", self.request.host, self.request.remote_ip)
+      self.set_header("Content-Type", "application/json")
+      self.write(json_encode(
+        {
+          "version" : file.read(),
+          "env" : str(os.environ),
+        }
+      ))
+      self.finish()
+    except Exception, e:
+      logging.debug(e)
+      self.set_status(404)
+
+class Random(tornado.web.RequestHandler):
+  def get(self):
+    """
+    Handles `/rand` resource.
+    """
+    try:
+      letters = string.ascii_lowercase
+      logging.info("/env serving from %s has been invoked from %s \n", self.request.host, self.request.remote_ip)
+      self.set_header("Content-Type", "application/json")
+      self.write(json_encode(
+        {
+          "Random" : ''.join(random.choice(letters) for i in range(10))
+        }
+      ))
+      self.finish()
+    except Exception, e:
+      logging.debug(e)
+      self.set_status(404)
 
 
 if __name__ == "__main__":
   app = tornado.web.Application([
         (r"/info", Info),
         (r"/env", Environment),
-        (r"/fruit", Fruit)
+        (r"/fruit", Fruit),
+        (r"/rand", Random)
   ])
  
  
