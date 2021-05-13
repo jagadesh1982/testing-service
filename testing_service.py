@@ -120,13 +120,34 @@ class Random(tornado.web.RequestHandler):
       logging.debug(e)
       self.set_status(404)
 
+class Read(tornado.web.RequestHandler):
+  def get(self):
+    """
+    Handles `/read` resource.
+    """
+    try:
+      letters = string.ascii_lowercase
+      fopen = open("/demo/demofile.txt", "r")
+      logging.info("/env serving from %s has been invoked from %s \n", self.request.host, self.request.remote_ip)
+      self.set_header("Content-Type", "application/json")
+      self.write(json_encode(
+        {
+          "Contents" : fopen.read()
+        }
+      ))
+      self.finish()
+    except Exception, e:
+      logging.debug(e)
+      self.set_status(404)     
+
 
 if __name__ == "__main__":
   app = tornado.web.Application([
         (r"/info", Info),
         (r"/env", Environment),
         (r"/fruit", Fruit),
-        (r"/rand", Random)
+        (r"/rand", Random),
+        (r"/read", Read) 
   ])
  
  
