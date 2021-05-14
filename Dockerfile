@@ -84,8 +84,9 @@ RUN set -ex ;\
     apk del --no-cache --purge .build-deps ;\
     rm -rf /var/cache/apk/*
 
-RUN mkdir /demo
-COPY demofile.txt /demo
+#RUN mkdir /demo
+#COPY demofile.txt /demo
+VOLUME /demo
 COPY requirements.txt /
 RUN pip install -U wheel
 RUN pip install -r requirements.txt
