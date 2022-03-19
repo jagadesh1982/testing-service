@@ -158,9 +158,13 @@ if __name__ == "__main__":
   VERSION = os.getenv('VERSION', "0.5.0")
   FRUIT = os.getenv('FRUIT', "apple")
   
-  if environ.get('Foo') is not None:
-    time.sleep(3000)
+  with open('/tmp/test.txt', 'w') as f:
+    f.write('Create a new text file!')
 
+  if environ.get('SLEEP') is not None:
+    time.sleep(int(os.getenv('SLEEP')))
+
+  os.remove("/tmp/test.txt")
   app.listen(PORT, address='0.0.0.0')
   logging.info("This is simple service in version v%s listening on port %s", VERSION, PORT)
   tornado.ioloop.IOLoop.current().start()
