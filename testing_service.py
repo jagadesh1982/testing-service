@@ -8,6 +8,9 @@ import time
 import socket
 import random
 import string
+from os import environ
+import time
+
 
 from tornado.escape import json_encode
 
@@ -154,6 +157,9 @@ if __name__ == "__main__":
   PORT = os.getenv('PORT0', 9876)
   VERSION = os.getenv('VERSION', "0.5.0")
   FRUIT = os.getenv('FRUIT', "apple")
+  
+  if environ.get('Foo') is not None:
+    time.sleep(3000)
 
   app.listen(PORT, address='0.0.0.0')
   logging.info("This is simple service in version v%s listening on port %s", VERSION, PORT)
